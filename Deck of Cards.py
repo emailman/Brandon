@@ -25,8 +25,11 @@ class Deck:
         random.shuffle(self.cards)
 
     def deal(self, players):
-        for i, card in enumerate(self.cards):
+        i = 0
+        while self.cards:
+            card = self.cards.pop()
             players[i % len(players)].hand.append(card)
+            i += 1
 
     def __str__(self):
         return '\n'.join(str(card) for card in self.cards)
@@ -54,10 +57,7 @@ PLAYERS = [Player(name) for name in ('East', 'South', 'West', 'North')]
 
 def main():
     # Create a list of 52 cards
-    cards = []
-    for suit in SUITS:
-        for rank in RANKS:
-            cards.append(Card(suit, rank))
+    cards = [Card(suit, rank) for suit in SUITS for rank in RANKS]
 
     # Create a deck using the cards
     deck = Deck(cards)
