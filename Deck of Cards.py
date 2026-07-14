@@ -28,8 +28,11 @@ class Deck:
 
     def deal(self, players):
         i = 0
+        # Keep dealing until all cards are dealt
         while self.cards:
-            card = self.cards.pop()
+            # Deal one card from the top of the deck
+            # to the next player
+            card = self.cards.pop(0)
             players[i % len(players)].hand.append(card)
             i += 1
 
@@ -44,11 +47,6 @@ class Player:
 
     def __str__(self):
         return self.name
-
-
-def sort_hand(hand):
-    return sorted(hand, key=lambda card: (SUITS.index(card.suit),
-                                          RANKS.index(card.rank)))
 
 
 # Global variables
@@ -68,10 +66,15 @@ def card_image_path(card):
                f"{card.rank.lower()}_of_{card.suit.lower()}.png")
 
 
+def sort_hand(hand):
+    return sorted(hand, key=lambda card: (SUITS.index(card.suit),
+                                          RANKS.index(card.rank)))
+
+
 def main():
     card_pictures = []
 
-    def show_players():
+    def show_hands():
         # remove the previous hand's card images before drawing the new ones
         for picture in card_pictures:
             picture.destroy()
@@ -80,13 +83,15 @@ def main():
         boxes = {'North': box_north, 'South': box_south,
                  'East': box_east, 'West': box_west}
         for player in PLAYERS:
+            print(f'\n{player.name}: ')
             hand = sort_hand(player.hand)
 
             box = boxes[player.name]
             for i, card in enumerate(hand):
-                # visible=False stops guizero re-packing every sibling each
-                # time a new Picture is added, which would undo the place()
-                # positioning below.
+                print(f'\t{card.rank} of {card.suit}')
+
+                # visible=False stops guizero re-packing each
+                # time a new Picture is added
                 picture = Picture(box, image=card_image_path(card),
                                   width=CARD_WIDTH, height=CARD_HEIGHT,
                                   visible=False)
@@ -112,7 +117,7 @@ def main():
         deck.deal(PLAYERS)
 
         # Show each player's hand
-        show_players()
+        show_hands()
 
     # Create a graphical playing table
     app = App(title='Deal the Cards', height=600, width=950, bg='tan')
