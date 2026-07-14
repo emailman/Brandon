@@ -68,14 +68,18 @@ def card_image_path(card):
 
 
 def main():
+    card_pictures = []
+
     def show_players():
+        # remove the previous hand's card images before drawing the new ones
+        for picture in card_pictures:
+            picture.destroy()
+        card_pictures.clear()
+
         boxes = {'North': box_north, 'South': box_south,
                  'East': box_east, 'West': box_west}
         for player in PLAYERS:
-            print(f"\n{player}:")
             hand = sort_hand(player.hand)
-            for card in hand:
-                print(f"\t{card}")
 
             box = boxes[player.name]
             for i, card in enumerate(hand):
@@ -87,13 +91,33 @@ def main():
                                   visible=False)
                 # overlap the cards so all 13 fit in the TitleBox
                 picture.tk.place(x=CARD_MARGIN + i * CARD_OFFSET, y=CARD_MARGIN)
+                card_pictures.append(picture)
+
+    def deal():
+        for player in PLAYERS:
+            player.hand = []
+
+        # Create a list of 52 cards
+        cards = [Card(suit, rank) for suit in SUITS for rank in RANKS]
+
+        # Create a deck using the cards
+        deck = Deck(cards)
+
+        # Shuffle the deck
+        deck.shuffle()
+
+        # Deal the deck to each of the players
+        deck.deal(PLAYERS)
+
+        # Show each player's hand
+        show_players()
 
     # Create a graphical playing table
-    app = App(height=600, width=950)
+    app = App(title='Deal the Cards', height=600, width=950, bg='tan')
 
     Box(app, height=25, width=100)
-    box_top = Box(app, height=140, width=400, border=1)
-    box_north = TitleBox(box_top, text='North', height=130, width=380, border=0)
+    box_top = Box(app, height=140, width=400, border=0)
+    box_north = TitleBox(box_top, text='North', height=130, width=380, border=1)
 
     Box(app, height=25, width=100)
     box_middle = Box(app, height=140, width=900, border=0)
@@ -106,20 +130,8 @@ def main():
     box_bottom = Box(app, height=140, width=400, border=0)
     box_south = TitleBox(box_bottom, text='South', height=130, width=380, border=1)
 
-    # Create a list of 52 cards
-    cards = [Card(suit, rank) for suit in SUITS for rank in RANKS]
-
-    # Create a deck using the cards
-    deck = Deck(cards)
-
-    # Shuffle the deck
-    deck.shuffle()
-
-    # Deal the deck to each of the players
-    deck.deal(PLAYERS)
-
-    # Show each player's hand
-    show_players()
+    Box(app, height=15, width=100)
+    PushButton(app, text='DEAL', command=deal)
 
     app.display()
 
