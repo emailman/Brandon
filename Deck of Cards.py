@@ -51,6 +51,7 @@ def sort_hand(hand):
                                           RANKS.index(card.rank)))
 
 
+# Global variables
 SUITS = 'Clubs', 'Diamonds', 'Hearts', 'Spades'
 RANKS = ('2', '3', '4', '5', '6', '7', '8', '9', '10',
          'Jack', 'Queen', 'King', 'Ace')
@@ -82,29 +83,28 @@ def main():
                 # time a new Picture is added, which would undo the place()
                 # positioning below.
                 picture = Picture(box, image=card_image_path(card),
-                                   width=CARD_WIDTH, height=CARD_HEIGHT,
-                                   visible=False)
+                                  width=CARD_WIDTH, height=CARD_HEIGHT,
+                                  visible=False)
                 # overlap the cards so all 13 fit in the TitleBox
                 picture.tk.place(x=CARD_MARGIN + i * CARD_OFFSET, y=CARD_MARGIN)
 
     # Create a graphical playing table
-    app = App(height=800, width=1000)
+    app = App(height=600, width=950)
 
-    Box(app, height=50, width=100)
-    box_top = Box(app, height=200, width=500, border=1)
-    box_north = TitleBox(box_top, text='North', height=190, width=400, border=1)
+    Box(app, height=25, width=100)
+    box_top = Box(app, height=140, width=400, border=1)
+    box_north = TitleBox(box_top, text='North', height=130, width=380, border=0)
 
-    Box(app, height=50, width=100)
-    box_middle = Box(app, height=200, width=900, border=1)
-    box_west = TitleBox(box_middle, text='West', height=190, width=400, border=1,
+    Box(app, height=25, width=100)
+    box_middle = Box(app, height=140, width=900, border=0)
+    box_west = TitleBox(box_middle, text='West', height=130, width=380, border=1,
                         align='left')
-    box_east = TitleBox(box_middle, text='East', height=190, width=400, border=1,
+    box_east = TitleBox(box_middle, text='East', height=130, width=380, border=1,
                         align='right')
 
-
-    Box(app, height=50, width=100)
-    box_bottom = Box(app, height=200, width=500, border=1)
-    box_south = TitleBox(box_bottom, text='South', height=190, width=400, border=1)
+    Box(app, height=25, width=100)
+    box_bottom = Box(app, height=140, width=400, border=0)
+    box_south = TitleBox(box_bottom, text='South', height=130, width=380, border=1)
 
     # Create a list of 52 cards
     cards = [Card(suit, rank) for suit in SUITS for rank in RANKS]
