@@ -64,7 +64,8 @@ CARD_MARGIN = 10
 
 
 def card_image_path(card):
-    return str(CARD_IMAGE_DIR / f"{card.rank.lower()}_of_{card.suit.lower()}.png")
+    return str(CARD_IMAGE_DIR /
+               f"{card.rank.lower()}_of_{card.suit.lower()}.png")
 
 
 def main():
@@ -90,7 +91,8 @@ def main():
                                   width=CARD_WIDTH, height=CARD_HEIGHT,
                                   visible=False)
                 # overlap the cards so all 13 fit in the TitleBox
-                picture.tk.place(x=CARD_MARGIN + i * CARD_OFFSET, y=CARD_MARGIN)
+                picture.tk.place(x=CARD_MARGIN + i * CARD_OFFSET,
+                                 y=CARD_MARGIN)
                 card_pictures.append(picture)
 
     def deal():
@@ -117,18 +119,20 @@ def main():
 
     Box(app, height=25, width=100)
     box_top = Box(app, height=140, width=400, border=0)
-    box_north = TitleBox(box_top, text='North', height=130, width=380, border=1)
+    box_north = TitleBox(box_top, text='North', height=130, width=380,
+                         border=1)
 
     Box(app, height=25, width=100)
     box_middle = Box(app, height=140, width=900, border=0)
-    box_west = TitleBox(box_middle, text='West', height=130, width=380, border=1,
-                        align='left')
-    box_east = TitleBox(box_middle, text='East', height=130, width=380, border=1,
-                        align='right')
+    box_west = TitleBox(box_middle, text='West', height=130, width=380,
+                        border=1, align='left')
+    box_east = TitleBox(box_middle, text='East', height=130, width=380,
+                        border=1, align='right')
 
     Box(app, height=25, width=100)
     box_bottom = Box(app, height=140, width=400, border=0)
-    box_south = TitleBox(box_bottom, text='South', height=130, width=380, border=1)
+    box_south = TitleBox(box_bottom, text='South', height=130, width=380,
+                         border=1)
 
     Box(app, height=15, width=100)
     PushButton(app, text='DEAL', command=deal)
