@@ -6,14 +6,15 @@
 """
 
 import random
+from dataclasses import dataclass, field
 from pathlib import Path
 from guizero import *
 
 
+@dataclass
 class Card:
-    def __init__(self, suit, rank):
-        self.suit = suit
-        self.rank = rank
+    suit: str
+    rank: str
 
     def __str__(self):
         return f"{self.rank} of {self.suit}"
@@ -26,7 +27,7 @@ class Deck:
     def shuffle(self):
         random.shuffle(self.cards)
 
-    def deal(self, players):
+    def deal(self, players: list["Player"]):
         i = 0
         # Keep dealing until all cards are dealt
         while self.cards:
@@ -40,10 +41,10 @@ class Deck:
         return '\n'.join(str(card) for card in self.cards)
 
 
+@dataclass
 class Player:
-    def __init__(self, name, hand: list[Card] | None = None):
-        self.name = name
-        self.hand = hand if hand is not None else []
+    name: str
+    hand: list[Card] = field(default_factory=list)
 
     def __str__(self):
         return self.name
@@ -61,12 +62,12 @@ CARD_OFFSET = 25
 CARD_MARGIN = 10
 
 
-def card_image_path(card):
+def card_image_path(card: Card) -> str:
     return str(CARD_IMAGE_DIR /
                f"{card.rank.lower()}_of_{card.suit.lower()}.png")
 
 
-def sort_hand(hand):
+def sort_hand(hand: list[Card]) -> list[Card]:
     return sorted(hand, key=lambda card: (SUITS.index(card.suit),
                                           RANKS.index(card.rank)))
 
@@ -88,7 +89,7 @@ def main():
 
             box = boxes[player.name]
             for i, card in enumerate(hand):
-                print(f'\t{card.rank} of {card.suit}')
+                print(card)
 
                 # visible=False stops guizero re-packing each
                 # time a new Picture is added
